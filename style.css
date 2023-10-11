@@ -1,0 +1,16 @@
+label {
+  padding: 5px;
+  color: blue;
+}
+
+input.input {
+  border: 1px solid blue;
+  border-radius: 5px;
+}
+
+input#signUp {
+  padding: 5px;
+  margin-left: 2px;
+  border-radius: 5px;
+  color: blue;
+}

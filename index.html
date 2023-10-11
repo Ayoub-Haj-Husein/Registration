@@ -1,0 +1,169 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Document</title>
+    <link rel="stylesheet" href="style.css" />
+  </head>
+  <body>
+    <div class="container">
+      <div id="Login-box">
+        <div class="left">
+          <label for="username">Username</label>
+          <br />
+          <input
+            type="text"
+            id="username"
+            name="username"
+            required
+            class="input"
+          />
+          <p id="usernameError"></p>
+          <label for="email">Email</label>
+          <br />
+          <input
+            type="text"
+            id="email"
+            name="email"
+            required
+            class="input"
+          />
+          <p id="emailError"></p>
+          <label for="password">Password</label>
+          <br />
+          <input
+            type="password"
+            id="password"
+            name="password"
+            required
+            class="input"
+          />
+          <p id="passwordError"></p>
+          <label for="password">Phone</label>
+          <br />
+          <input
+            type="tel"
+            id="phone"
+            name="phone"
+            required
+            class="input"
+          />
+          <p id="phoneError"></p>
+          <br />
+          <input
+            type="submit"
+            id="signUp"
+            name="signup-submit"
+            value="Sign up"
+          />
+        </div>
+      </div>
+    </div>
+    <script src="app.js"></script>
+    <script type="module">
+      // Import the functions you need from the SDKs you need
+      import { initializeApp } from "https://www.gstatic.com/firebasejs/10.4.0/firebase-app.js";
+      import {
+        getDatabase,
+        ref,
+        set,
+      } from "https://www.gstatic.com/firebasejs/10.4.0/firebase-database.js";
+      import {
+        getAuth,
+        createUserWithEmailAndPassword,
+      } from "https://www.gstatic.com/firebasejs/10.4.0/firebase-auth.js";
+
+      // Your web app's Firebase configuration
+      const firebaseConfig = {
+        apiKey: "AIzaSyCJxHvYdh7iX2mh92J0zbEF-FrD65I1HXY",
+        authDomain: "registration-e4c9f.firebaseapp.com",
+        databaseURL: "https://registration-e4c9f-default-rtdb.firebaseio.com",
+        projectId: "registration-e4c9f",
+        storageBucket: "registration-e4c9f.appspot.com",
+        messagingSenderId: "295171530124",
+        appId: "1:295171530124:web:38d438ed6a611a41c4caa9",
+        measurementId: "G-7L1GB7XG47",
+      };
+
+      // Initialize Firebase
+      const app = initializeApp(firebaseConfig);
+      const auth = getAuth(app);
+
+      const signUp = document.getElementById("signUp");
+      signUp.addEventListener("click", () => {
+        var username = document.getElementById("username").value;
+        var email = document.getElementById("email").value;
+        var password = document.getElementById("password").value;
+        var number = document.getElementById("phone").value;
+
+        // Function to validate the username
+        function validateName(name) {
+          if (name.trim() === "") {
+            document.getElementById("usernameError").textContent =
+              "Please enter your username";
+            return false;
+          } else {
+            document.getElementById("usernameError").textContent = "";
+            return true;
+          }
+        }
+
+        // Function to validate the email
+        function validateEmail(email) {
+          if (!/\S+@\S+\.\S+/.test(email)) {
+            document.getElementById("emailError").textContent =
+              "Please enter a valid email address";
+            return false;
+          } else {
+            document.getElementById("emailError").textContent = "";
+            return true;
+          }
+        }
+
+        // Function to validate the password
+        function validatePassword(password) {
+          if (
+            !/(?=.*\d)(?=.*[a-z])(?=.*[A-Z])(?=.*[\W_]).{8,}/.test(password)
+          ) {
+            document.getElementById("passwordError").textContent =
+              "Password must be at least 8 characters with 1 number, 1 uppercase, and 1 special character.";
+            return false;
+          } else {
+            document.getElementById("passwordError").textContent = "";
+            return true;
+          }
+        }
+
+        // Function to validate the phone number
+        function validatePhone(phone) {
+          if (!/^07\d{8}$/.test(phone)) {
+            document.getElementById("phoneError").textContent =
+              "Phone number must start with 07 and be 10 digits long.";
+            return false;
+          } else {
+            document.getElementById("phoneError").textContent = "";
+            return true;
+          }
+        }
+
+        // Check all fields and only proceed if they are valid
+        if (
+          validateName(username) &&
+          validateEmail(email) &&
+          validatePassword(password) &&
+          validatePhone(number)
+        ) {
+          createUserWithEmailAndPassword(auth, email, password)
+            .then((userCredential) => {
+              // User signed up successfully
+              alert("User Created");
+            })
+            .catch((error) => {
+              alert(error.message);
+            });
+        }
+      });
+    </script>
+  </body>
+</html>
